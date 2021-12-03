@@ -258,7 +258,7 @@ static void _cpuid(unsigned int cpu_info[4U], const unsigned int cpu_info_type)
                           "=a" (cpu_info[0]), "=&r" (cpu_info[1]),
                           "=c" (cpu_info[2]), "=d" (cpu_info[3]) :
                           "0" (cpu_info_type), "2" (0U));
-# else
+# elif defined(__arm__) || defined(__aarch64__)
     __asm__ __volatile__ ("cpuid" :
                           "=a" (cpu_info[0]), "=b" (cpu_info[1]),
                           "=c" (cpu_info[2]), "=d" (cpu_info[3]) :
