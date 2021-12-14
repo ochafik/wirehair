@@ -10,7 +10,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 option(MARCH_NATIVE "Use -march=native option" ON)
-option(EMSCRIPTEN "Build w/ emscripten" OFF)
+option(WIREHAIR_EMSCRIPTEN "Build w/ emscripten" OFF)
 
 set(LIB_SOURCE_FILES
         wirehair.cpp
@@ -65,18 +65,12 @@ set(GEN_TABLES
 
 if(MSVC)
 else()
-    set(CMAKE_CXX_FLAGS "-Wall -Wextra")
-    set(EMSCRIPTEN_SOURCE_MAP_BASE "/dist")
-    set(CMAKE_CXX_FLAGS_DEBUG "-gsource-map -O0 --source-map-base=${EMSCRIPTEN_SOURCE_MAP_BASE}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+    set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
     set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 endif()
 
-if(EMSCRIPTEN)
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DGF256_TARGET_MOBILE")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DGF256_TARGET_MOBILE")
-
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -flto")
-elseif(MARCH_NATIVE)
+if(MARCH_NATIVE)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -march=native")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -march=native")
 endif()
